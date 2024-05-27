@@ -7,51 +7,69 @@ import java.util.List;
 @RequestMapping("/operations")
 public class OperationsController {
 
+    private StringBuilder expression = new StringBuilder();
+    private double currentResult = 0.0;
+
     @GetMapping("/hello")
     public String hello() {
         return "Hello, World!";
     }
 
+    @GetMapping("/number")
+    public String addNumber(@RequestParam double number) {
+        currentResult = number;
+        expression.append(number);
+        return String.valueOf(number);
+    }
+
     @GetMapping("/sum")
-    public String sum(@RequestParam List<Double> numbers) {
-        double sum = numbers.stream().mapToDouble(Double::doubleValue).sum();
-        return String.valueOf(sum);
+    public String sum(@RequestParam double number) {
+        expression.append("+").append(number);
+        currentResult += number;
+        return String.valueOf(currentResult);
     }
 
-    @GetMapping("/sub")
-    public String sub(@RequestParam List<Double> numbers) {
-        double result = numbers.getFirst();
-        for (int i = 1; i < numbers.size(); i++) {
-            result -= numbers.get(i);
-        }
-        return String.valueOf(result);
+    @GetMapping("/subtract")
+    public String subtract(@RequestParam double number) {
+        expression.append("-").append(number);
+        currentResult -= number;
+        return String.valueOf(currentResult);
     }
 
-    @GetMapping("/mul")
-    public String mul(@RequestParam List<Double> numbers) {
-        double result = numbers.getFirst();
-        for (int i = 1; i < numbers.size(); i++) {
-            result *= numbers.get(i);
-        }
-        return String.valueOf(result);
+    @GetMapping("/multiply")
+    public String multiply(@RequestParam double number) {
+        expression.append("*").append(number);
+        currentResult *= number;
+        return String.valueOf(currentResult);
     }
 
-    @GetMapping("/div")
-    public String div(@RequestParam double a, @RequestParam double b) {
-        if (b == 0) {
+    @GetMapping("/divide")
+    public String divide(@RequestParam double number) {
+        if (number == 0) {
             return "Error";
         } else {
-            return String.valueOf(a / b);
+            expression.append("/").append(number);
+            currentResult /= number;
+            return String.valueOf(currentResult);
         }
     }
 
     @GetMapping("/changeSign")
-    public String changeSign(@RequestParam double num) {
-        return String.valueOf(-num);
+    public String changeSign() {
+        currentResult *= -1;
+        return String.valueOf(currentResult);
     }
 
-    @GetMapping("/percent")
-    public String percent(@RequestParam double num) {
-        return String.valueOf(num / 100);
+    @GetMapping("/percentage")
+    public String percentage() {
+        currentResult /= 100;
+        return String.valueOf(currentResult);
+    }
+
+    @GetMapping("/equal")
+    public String equal() {
+        expression.setLength(0);
+        expression.append(currentResult);
+        return String.valueOf(currentResult);
     }
 }
