@@ -1,7 +1,6 @@
 package com.dam.calculatorApi.controller;
 
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/operations")
@@ -71,5 +70,12 @@ public class OperationsController {
         expression.setLength(0);
         expression.append(currentResult);
         return String.valueOf(currentResult);
+    }
+
+    @GetMapping("/clear")
+    public String clear() {
+        expression.setLength(0);
+        currentResult = 0.0;
+        return "0";
     }
 }
