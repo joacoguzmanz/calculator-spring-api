@@ -1,81 +1,30 @@
 package com.dam.calculatorApi.controller;
 
+import com.dam.calculatorApi.model.CalculationRequest;
+import com.dam.calculatorApi.service.CalculatorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DecimalFormat;
 
 @RestController
 @RequestMapping("/operations")
 public class OperationsController {
 
-    private StringBuilder expression = new StringBuilder();
-    private double currentResult = 0.0;
+    private final CalculatorService calculatorService;
+    private final DecimalFormat df = new DecimalFormat("#.##");
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello, World!";
+    @Autowired
+    public OperationsController(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
     }
 
-    @GetMapping("/number")
-    public String addNumber(@RequestParam double number) {
-        currentResult = number;
-        expression.append(number);
-        return String.valueOf(number);
-    }
-
-    @GetMapping("/sum")
-    public String sum(@RequestParam double number) {
-        expression.append("+").append(number);
-        currentResult += number;
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/subtract")
-    public String subtract(@RequestParam double number) {
-        expression.append("-").append(number);
-        currentResult -= number;
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/multiply")
-    public String multiply(@RequestParam double number) {
-        expression.append("*").append(number);
-        currentResult *= number;
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/divide")
-    public String divide(@RequestParam double number) {
-        if (number == 0) {
-            return "Error";
-        } else {
-            expression.append("/").append(number);
-            currentResult /= number;
-            return String.valueOf(currentResult);
-        }
-    }
-
-    @GetMapping("/changeSign")
-    public String changeSign() {
-        currentResult *= -1;
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/percentage")
-    public String percentage() {
-        currentResult /= 100;
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/equal")
-    public String equal() {
-        expression.setLength(0);
-        expression.append(currentResult);
-        return String.valueOf(currentResult);
-    }
-
-    @GetMapping("/clear")
-    public String clear() {
-        expression.setLength(0);
-        currentResult = 0.0;
-        return "0";
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/calculate")
+    public ResponseEntity<Object> getResult(@RequestBody CalculationRequest request) {
+        double result = calculatorService.calculateResult(request.getFirstNumber(), request.getOperator(), request.getSecondNumber());
+        return new ResponseEntity<>(df.format(result), HttpStatus.OK);
     }
 }
