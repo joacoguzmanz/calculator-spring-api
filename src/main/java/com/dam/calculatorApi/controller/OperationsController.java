@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/operations")
@@ -25,6 +26,9 @@ public class OperationsController {
     @PostMapping("/calculate")
     public ResponseEntity<Object> getResult(@RequestBody CalculationRequest request) {
         double result = calculatorService.calculateResult(request.getFirstNumber(), request.getOperator(), request.getSecondNumber());
+        if (Double.isNaN(result)) {
+            return new ResponseEntity<>(Map.of("error", "Error"), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(df.format(result), HttpStatus.OK);
     }
 }

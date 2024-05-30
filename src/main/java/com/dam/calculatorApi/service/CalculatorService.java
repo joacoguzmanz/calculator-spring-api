@@ -8,10 +8,10 @@ public class CalculatorService {
         return switch (operator) {
             case "+" -> firstNumber + secondNumber;
             case "-" -> firstNumber - secondNumber;
-            case "*" -> firstNumber * secondNumber;
-            case "/" -> {
+            case "X" -> firstNumber * secondNumber;
+            case "÷" -> {
                 if (secondNumber == 0) {
-                    throw new IllegalArgumentException("Cannot divide by zero");
+                    yield Double.NaN;
                 }
                 yield firstNumber / secondNumber;
             }
