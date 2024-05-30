@@ -31,4 +31,11 @@ public class OperationsController {
         }
         return new ResponseEntity<>(df.format(result), HttpStatus.OK);
     }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PostMapping("/calculateFunction")
+    public ResponseEntity<Object> getFunctionResult(@RequestBody CalculationRequest request) {
+        double result = calculatorService.calculateFunctions(request.getFunction(), request.getSingleNumber());
+        return new ResponseEntity<>(df.format(result), HttpStatus.OK);
+    }
 }

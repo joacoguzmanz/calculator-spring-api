@@ -5,7 +5,8 @@ public class CalculationRequest {
     private double firstNumber;
     private String operator;
     private double secondNumber;
-    // private double number;
+    private String function;
+    private double singleNumber;
 
     // getters and setters
     public double getFirstNumber() {
@@ -30,5 +31,21 @@ public class CalculationRequest {
 
     public void setSecondNumber(double secondNumber) {
         this.secondNumber = secondNumber;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public double getSingleNumber() {
+        return singleNumber;
+    }
+
+    public void setSingleNumber(double singleNumber) {
+        this.singleNumber = singleNumber;
     }
 }

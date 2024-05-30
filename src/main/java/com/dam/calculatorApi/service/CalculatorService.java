@@ -18,4 +18,12 @@ public class CalculatorService {
             default -> throw new IllegalArgumentException("Invalid operator: " + operator);
         };
     }
+
+    public double calculateFunctions(String function, double number) {
+        return switch (function) {
+            case "opposite" -> number * -1;
+            case "%" -> number / 100;
+            default -> throw new IllegalArgumentException("Invalid function: " + function);
+        };
+    }
 }
